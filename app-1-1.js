@@ -2,8 +2,6 @@
 
 var common = require('./aoc-common.js');
 
-const csv = require('csv-parser')
-const fs = require('fs')
 
 function calculateFuelNeeded(rocket_modules){
 
