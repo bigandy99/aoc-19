@@ -34,7 +34,6 @@ class Computer {
                 this.multiply();
                 break;
             case 99:
-                console.log('Program complete!');
                 this._running = false;
                 break;
             default:
