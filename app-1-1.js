@@ -14,7 +14,7 @@ function calculateFuelNeeded(rocket_modules){
     console.log("Total fuel needed: " + total_fuel);
 }
 
-common.loadInputData()
+common.loadInputData('input.txt')
     .then(
         x => calculateFuelNeeded(x)
     )

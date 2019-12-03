@@ -2,10 +2,10 @@ const csv = require('csv-parser')
 const fs = require('fs')
 
 
-module.exports.loadInputData = function() {
+module.exports.loadInputData = function(filename) {
     return new Promise((resolve) => {
         const results = [];
-        fs.createReadStream('input.txt')
+        fs.createReadStream(filename)
         .pipe(csv({ headers: ['mass'] }))
         .on('data', (data) => results.push(data))
         .on('end', () => {
