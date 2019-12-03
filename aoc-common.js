@@ -22,3 +22,13 @@ module.exports.calculateFuelFromMass = function(mass){
     fuel = fuel -2;
     return fuel;
 }
+
+
+module.exports.loadOneCsvRowAsArray = function(filename) {
+    return new Promise((resolve) => {
+        fs.readFile(filename, 'utf8', function(err, contents) {
+            var result = contents.split(","); 
+            resolve(result);
+        });
+    });
+}
