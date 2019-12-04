@@ -6,6 +6,7 @@ class PatchPanel {
 
     addWire(data) {
         // a wire is stored as an arry of steps
+
         let steps = [];
         for (let i = 0; i < data.length; i++) {
             steps[i] = {};
@@ -16,6 +17,48 @@ class PatchPanel {
     }
 
     findDistanceToClosestIntersection() {
+
+        let intersections = this.getIntersections();
+
+        //sort intersections by closest to origin
+        intersections.sort(function(a,b){
+            let first = Math.abs(a.x)+Math.abs(a.y);
+            let second = Math.abs(b.x)+Math.abs(b.y);
+            return first-second;
+        })
+
+        //return distance to closest intersection
+        if(intersections[0]){
+            let distance = Math.abs(intersections[0].x) + Math.abs(intersections[0].y);
+            return distance;
+        }
+        else{
+            return false;
+        }
+
+    }
+
+    findFewestStepsToAnIntersection() {
+
+        let intersections = this.getIntersections();
+
+        //sort intersections by fewest steps
+        intersections.sort(function(a,b){
+            return a.total_steps - b.total_steps;
+        })
+
+        //return number of steps for intersection with fewest steps
+        if(intersections[0]){
+            let steps = intersections[0].total_steps;
+            return steps;
+        }
+        else{
+            return false;
+        }
+
+    }
+
+    getIntersections(){
         // note: only works for first 2 wires added
 
         //calculate all positions for each wire
@@ -24,34 +67,27 @@ class PatchPanel {
             wire_positions.push( this.getAllPositions(wire) );
         }        
 
-        //determine any common wire positions
+        //determine wire intersections (aka collisions)
         let collisions = [];
+        let wire1_steps = 1;
+        let wire2_steps = 1;
         for(let wp1 of wire_positions[0]) { 
             for(let wp2 of wire_positions[1]) { 
                 if((wp1.x == wp2.x)&&(wp1.y == wp2.y)){
                     let collision = {};
                     collision.x = wp1.x;
                     collision.y = wp1.y;
+                    collision.wire1_steps = wire1_steps;
+                    collision.wire2_steps = wire2_steps;
+                    collision.total_steps = wire1_steps + wire2_steps;
                     collisions.push(collision);
-                }   
+                }
+                wire2_steps++;
             }
+            wire2_steps = 1;
+            wire1_steps++;
         }
-
-        //sort any common positions by closest to origin
-        collisions.sort(function(a,b){
-            let first = Math.abs(a.x)+Math.abs(a.y);
-            let second = Math.abs(b.x)+Math.abs(b.y);
-            return first-second;
-        })
-
-        //return distance to first common position (if one exists)
-        if(collisions[0]){
-            let distance = Math.abs(collisions[0].x) + Math.abs(collisions[0].y);
-            return distance;
-        }
-        else{
-            return false;
-        }
+        return collisions;
 
     }
 
