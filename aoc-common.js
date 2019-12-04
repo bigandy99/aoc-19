@@ -1,5 +1,6 @@
 const csv = require('csv-parser')
 const fs = require('fs')
+const readline = require('readline');
 
 
 module.exports.loadInputData = function(filename) {
@@ -14,7 +15,6 @@ module.exports.loadInputData = function(filename) {
     });
 }
 
-
 module.exports.calculateFuelFromMass = function(mass){
 
     fuel = (mass/3);
@@ -22,7 +22,6 @@ module.exports.calculateFuelFromMass = function(mass){
     fuel = fuel -2;
     return fuel;
 }
-
 
 module.exports.loadOneCsvRowAsArray = function(filename) {
     return new Promise((resolve) => {
@@ -32,3 +31,20 @@ module.exports.loadOneCsvRowAsArray = function(filename) {
         });
     });
 }
+
+module.exports.loadCSVLinesAsArrays = function(filename) {
+    return new Promise((resolve) => {
+        let lines = [];
+        let rl = readline.createInterface({
+            input: fs.createReadStream(filename)
+        });
+        rl.on('line', function(line) {
+            let line_array = line.split(","); 
+            lines.push(line_array);
+        });
+        rl.on('close', function(line) {
+            resolve(lines);
+        });
+    });
+}
+
