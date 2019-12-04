@@ -9,12 +9,10 @@ function calculateFuelNeeded(rocket_modules){
     
     for(let rocket_module of rocket_modules) {
 
-        //console.log('MODULE START:');
-
         var total_mass = 0;
         var extra_mass = 0;
 
-        total_mass = extra_mass = common.calculateFuelFromMass(rocket_module.mass);
+        total_mass = extra_mass = calculateFuelFromMass(rocket_module.mass);
 
         while (extra_mass > 2){
             extra_mass = common.calculateFuelFromMass(extra_mass);
@@ -28,6 +26,14 @@ function calculateFuelNeeded(rocket_modules){
     };
 
     console.log("Total fuel needed: " + total_fuel);
+}
+
+let calculateFuelFromMass = function(mass){
+
+    fuel = (mass/3);
+    fuel = Math.floor(fuel);
+    fuel = fuel -2;
+    return fuel;
 }
 
 common.loadInputData('puzzle-inputs/module-masses.txt')

@@ -15,14 +15,6 @@ module.exports.loadInputData = function(filename) {
     });
 }
 
-module.exports.calculateFuelFromMass = function(mass){
-
-    fuel = (mass/3);
-    fuel = Math.floor(fuel);
-    fuel = fuel -2;
-    return fuel;
-}
-
 module.exports.loadOneCsvRowAsArray = function(filename) {
     return new Promise((resolve) => {
         fs.readFile(filename, 'utf8', function(err, contents) {
